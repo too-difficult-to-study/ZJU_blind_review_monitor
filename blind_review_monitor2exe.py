@@ -33,9 +33,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import *
 
-# ==================== 配置 ====================
-DINGTALK_WEBHOOK = "https://oapi.dingtalk.com/robot/send?access_token=d2e2cb4eb12c3eedb175be3cc516e0755445080e0f8b0720eb336e86f01ef84c"
-
 # 手动输入账号密码 输入完按回车
 print("="*40)
 os.environ["ZJUAM_ACCOUNT"] = input("请输入浙大统一账号：")
@@ -54,9 +51,44 @@ else:
 
 COOKIES_FILE = BASE_DIR / "cookies.pkl"
 RESULT_CACHE_FILE = BASE_DIR / "last_result.json"
+# 钉钉配置保存文件
+DING_CONFIG_FILE = BASE_DIR / "ding_config.json"
 
 REFRESH_INTERVAL = 60
 TEST_MODE = False
+
+# ==================== 钉钉配置持久化 ====================
+def load_ding_webhook():
+    """读取本地保存的钉钉webhook"""
+    if not DING_CONFIG_FILE.exists():
+        return ""
+    try:
+        with open(DING_CONFIG_FILE, "r", encoding="utf-8") as f:
+            cfg = json.load(f)
+        return cfg.get("webhook", "").strip()
+    except:
+        return ""
+
+def save_ding_webhook(url):
+    """保存钉钉webhook到本地"""
+    try:
+        with open(DING_CONFIG_FILE, "w", encoding="utf-8") as f:
+            json.dump({"webhook": url}, f, ensure_ascii=False, indent=2)
+        print("✅ 钉钉Webhook已本地保存，下次自动加载")
+    except:
+        print("⚠️ 钉钉配置保存失败")
+
+# ==================== 钉钉Webhook 动态加载 ====================
+# 先读本地配置
+DINGTALK_WEBHOOK = load_ding_webhook()
+
+# 如果没有保存过，手动输入并保存
+if not DINGTALK_WEBHOOK:
+    print("\n" + "="*40)
+    print("请输入你的钉钉机器人Webhook：")
+    DINGTALK_WEBHOOK = input("Webhook：").strip()
+    save_ding_webhook(DINGTALK_WEBHOOK)
+    print("="*40)
 
 # ==================== 通知（仅保留钉钉，删掉桌面通知防闪退） ====================
 def send_dingtalk_notification(title: str, msg: str):
