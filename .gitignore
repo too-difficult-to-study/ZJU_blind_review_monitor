@@ -1,4 +1,24 @@
 cookies.pkl
-ding_config.json
 last_result.json
+ding_config.json
+
+# 编译打包输出文件夹
+build/
+
+# Python 缓存
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 编辑器临时/备份文件
+*.un~
+*~
+.gitignore~
+..gitignore.un~
+
+# 系统垃圾文件
+.DS_Store
+.idea/
+.vscode/
+*.tmp
