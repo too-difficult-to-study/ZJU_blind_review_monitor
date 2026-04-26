@@ -44,8 +44,16 @@ print("="*40)
 
 TARGET_URL = "https://yjsy.zju.edu.cn/dashboard/workplace?dm=xw_sqzt&mode=2&role=1&back=dashboard"
 LOGIN_URL = "https://zjuam.zju.edu.cn/cas/login"
-COOKIES_FILE = Path(__file__).parent / "cookies.pkl"
-RESULT_CACHE_FILE = Path(__file__).parent / "last_result.json"
+# 获取 exe 所在的真实目录
+if getattr(sys, 'frozen', False):
+    # 打包成 exe 后运行
+    BASE_DIR = Path(sys.executable).parent
+else:
+    # 源码运行
+    BASE_DIR = Path(__file__).parent
+
+COOKIES_FILE = BASE_DIR / "cookies.pkl"
+RESULT_CACHE_FILE = BASE_DIR / "last_result.json"
 
 REFRESH_INTERVAL = 60
 TEST_MODE = False
