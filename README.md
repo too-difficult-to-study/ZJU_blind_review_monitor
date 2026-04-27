@@ -18,7 +18,7 @@
 ## 使用前准备（重要）
 1. 创建一个钉钉群（可先拉一位好友再踢出，群可保留）
 2. 按照教程创建钉钉机器人：
-   https://gist.github.com/FanBB2333/229d177bbffdb1adc96f5f8a65a3c47f
+   https://open.dingtalk.com/document/dingstart/custom-bot-creation-and-installation
 3. **安全设置 → 自定义关键词 → 添加关键词：盲审**
 4. 复制机器人的 Webhook 地址
 
